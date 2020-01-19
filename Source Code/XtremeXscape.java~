@@ -1,0 +1,471 @@
+
+import java.awt.*;
+
+import java.awt.image.*;
+
+import java.awt.event.*;
+
+import javax.swing.*;
+
+import javax.swing.Timer.*;
+
+
+public class XtremeXscape extends JFrame
+
+{
+
+  JFrame frame;
+  Timer logoLoop;
+  ImageIcon logo;
+
+  ImageIcon livingRoom;
+
+  ImageIcon hauntedHouse;
+
+  ImageIcon girl;
+  JTextField enterspot;
+  JLabel label1;
+
+  JLabel label2;
+
+  JLabel label3;
+  JPanel logoPanel;
+  JLabel labelLogo;
+  JPanel panelHouse;
+  JMenu options;
+
+  JMenuItem highScores;
+
+ JMenuItem quit;
+JMenuItem save;
+  JMenuItem instructions;
+  JMenuItem levels;
+
+  JMenuBar myMenu;
+  JPanel savePage;
+  JPanel instructionsPage;
+  HighScores hs;
+  JPanel levelsPage;
+  XtremeXscape xxClass;
+  Level1 l1;
+  Level2 l2;
+  Level3 l3;
+  int x = 490;
+
+  int y = 260;
+
+  int xLen = 30;
+
+  int yLen = 30;
+  int count = 0;
+  int score1;
+  int score2;
+  int score3;
+  
+  public XtremeXscape()
+  {
+    xxClass = this;
+    levelsPage = new JPanel();
+    panelHouse = new JPanel ();
+    instructionsPage = new JPanel ();
+    savePage = new JPanel ();
+    frame = new JFrame ("");
+    frame.setSize (1020, 576);
+    frame.setLayout (new BorderLayout ());
+    frame.setResizable(false);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setVisible (true);
+    hs  = new HighScores (frame);
+    l1 = new Level1 (frame, xxClass);
+    l2 = new Level2 (frame, xxClass);
+    l3 = new Level3 (frame, xxClass);
+//    gameLoopTimer = new Timer (10, new ActionListener()
+
+//{
+
+//logoZoom();
+
+//});
+
+  }
+
+  
+
+  
+
+  public void logoZoom()
+
+  {
+    x-=10;
+    y-=10;
+    xLen+=20;
+    yLen+=20;
+    labelLogo.setBounds ( x, y, xLen, yLen);
+    logoPanel.add(labelLogo);
+    logoPanel.repaint();   
+  }
+
+  public void opening()
+
+  {
+
+    logo = new ImageIcon("Logo.png");
+    labelLogo = new JLabel(logo);
+    logoPanel = new JPanel ();
+    logoPanel.setLayout (null);
+    logoPanel.add(labelLogo);
+    frame.add(logoPanel);
+    logoLoop = new Timer (1, new ActionListener()
+
+                           {
+
+      public void actionPerformed (ActionEvent ae)
+
+      {
+        count++;
+        logoZoom();
+        if (count > 10000)
+        {
+         logoLoop.stop();
+        }
+
+      }
+
+    });
+      logoLoop.start();
+
+
+    
+
+  }
+  
+
+  public void hauntedHousePic()
+
+  {
+    new OpenAnimation (frame);
+    JLabel title = new JLabel ("Xtreme Xscape");
+    hauntedHouse = new ImageIcon("HauntedHouse.png");
+    label2 = new JLabel(hauntedHouse);
+    panelHouse.setLayout (null);
+    title.setForeground (Color.WHITE);
+    title.setFont(new java.awt.Font("Brush Script MT", Font.BOLD, 120));
+    panelHouse.add (title);
+    title.setBounds (160, 0, 700, 200);
+    panelHouse.add (label2);
+    label2.setBounds (0, 0, 1024, 576);
+    frame.add(panelHouse);
+    frame.setVisible(true);
+  }
+
+  
+public void instructionsSetUp ()
+{
+frame.remove (panelHouse);
+frame.remove (levelsPage);
+frame.remove (savePage);
+frame.remove (hs.pane);
+instructionsPage.setBackground(new java.awt.Color(123, 247, 189));
+instructionsPage.setLayout(null);
+JLabel title = new JLabel("Instructions");
+title.setFont(new java.awt.Font("Copperplate", 1, 25));
+instructionsPage.add (title);
+Dimension size = title.getPreferredSize();
+title.setBounds(400, 25, 300, size.height);
+
+JLabel info = new JLabel ("<html>You are trapped inside Dr EveVil's house and need to escape! The only way to do so is to pass all three levels.<br><br> To access the levels go to the levels page and click the level that you want to play.<br>Instructions will pop up before the game, make sure to read carefully because you can't access them after you close them.<br> Once you are in a level you are only able to exit by finishing the level (you don't have to finish with a good score).<br>After finishing a level you will return to the levels page of the game.<br>In each level you can win up to 200 points.<br><br>You can view your score in the highscores screen also accessible through the menu.<br>The high scores menu also has an option of clearing the previous highscores.<br><br>To save your score you can go to the save option in the menu and type in your username.<br><br>To exit this game press the quit option on the menu.<br><br>Now you've learned the basics of this game, can you escape Dr EveVil's house before it's too late?</html>");
+instructionsPage.add(info);
+size = info.getPreferredSize();
+info.setBounds(25, 100, size.width, size.height);
+instructionsPage.setVisible(true);
+frame.add(instructionsPage);
+frame.repaint();
+frame.revalidate();
+}
+
+  
+
+  public void levelsSetUp()
+  {    
+    levelsPage.setLayout (null);
+    levelsPage.setBackground(new Color(240, 200, 233));
+    frame.remove (panelHouse);
+    frame.remove (savePage);
+    frame.remove (instructionsPage);
+    frame.remove (hs.pane);
+    //frame.remove (instructionsPage);
+    JButton level1 = new JButton ("Level 1");
+
+    JButton level2 = new JButton ("Level 2");
+
+    JButton level3 = new JButton ("Level 3");
+
+    JLabel title = new JLabel("Levels");
+
+    title.setFont(new java.awt.Font("Copperplate", 1, 30));
+    levelsPage.add (title);
+    title.setBounds (450, 0, 132, 50);
+   levelsPage.add (level1);
+   level1.setBounds (430, 150, 142, 50);
+    levelsPage.add (level2);
+    level2.setBounds (430, 250, 142, 50);
+    levelsPage.add (level3);
+level3.setBounds (430, 350, 142, 50);
+    frame.add(levelsPage);
+    frame.repaint();
+
+    frame.revalidate();
+
+    level1.addActionListener (new ActionListener ()
+
+                                {
+
+      public void actionPerformed (ActionEvent ae)
+
+      {
+        frame.remove (levelsPage);
+        options.setEnabled (false);
+        l1 = new Level1 (frame, xxClass);
+        l1.executionLevel1 ();
+      }
+
+    });
+    
+    
+     level2.addActionListener (new ActionListener ()
+
+                                {
+
+      public void actionPerformed (ActionEvent ae)
+
+      {
+
+        frame.remove (levelsPage);
+        options.setEnabled (false);
+       // l2 = new Level2 (frame, xxClass);
+        l2.execution ();
+      }
+
+    });
+     
+     
+     
+      level3.addActionListener (new ActionListener ()
+
+                                {
+
+      public void actionPerformed (ActionEvent ae)
+
+      {
+        frame.remove (levelsPage);
+        options.setEnabled (false);
+        l3.execution ();
+        
+      }
+
+    });
+  }
+
+  public void afterLevel ()
+  {
+    options.setEnabled (true);
+    frame.add (levelsPage);
+    frame.repaint();
+  }
+  
+  public void menu()
+
+  {
+    options = new JMenu ("Options");
+    save = new JMenuItem ("Save Score");
+    instructions = new JMenuItem("Instructions");
+    levels = new JMenuItem("Levels");
+    highScores = new JMenuItem ("High Scores");
+    quit = new JMenuItem ("Quit");
+    myMenu = new JMenuBar ();
+    options.add (levels);
+    options.add (instructions);
+    options.add (highScores);
+    options.add (save);
+    options.add (quit);
+    myMenu.add (options);
+    frame.add (myMenu, BorderLayout.NORTH);
+
+    instructions.addActionListener (new ActionListener ()
+
+                                      {
+
+      public void actionPerformed (ActionEvent ae)
+
+      {
+
+        instructionsSetUp();
+
+      }
+
+    });
+
+    
+
+    levels.addActionListener (new ActionListener ()
+
+                                {
+
+      public void actionPerformed (ActionEvent ae)
+
+      {
+
+        levelsSetUp();
+
+      }
+
+    });
+
+    
+
+    quit.addActionListener (new ActionListener ()
+
+                              {
+      public void actionPerformed (ActionEvent ae)
+      {
+        options.setEnabled (false);
+        frame.remove (panelHouse);
+        frame.remove (savePage);
+        frame.remove (levelsPage);
+        frame.remove (instructionsPage);
+        frame.remove (hs.pane);
+        System.out.print ("credits");
+        new Credits (frame);
+      }
+    });
+
+    highScores.addActionListener (new ActionListener ()
+
+                              {
+      public void actionPerformed (ActionEvent ae)
+      {
+        frame.remove (panelHouse);
+        frame.remove (savePage);
+        frame.remove (levelsPage);
+        frame.remove (instructionsPage);
+        frame.remove (hs.pane);
+        hs.display();
+      }
+    });
+    
+    save.addActionListener (new ActionListener ()
+
+                              {
+      public void actionPerformed (ActionEvent ae)
+      {
+        frame.remove (panelHouse);
+        frame.remove (levelsPage);
+        frame.remove (instructionsPage);
+        frame.remove (hs.pane);
+        saveMethod();
+      }
+    });
+
+// levels.addActionListener (this);
+
+// highScores.addActionListener (this);
+
+// quit.addActionListener (this);
+
+    
+
+    frame.setVisible (true);
+
+    
+
+    setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+
+  }
+
+  
+public void saveMethod ()
+{
+  score1 = Math.max(score1, l1.getScore());
+  score2 = Math.max(score2, l2.getScore());
+  score3 = Math.max(score3, l3.getScore());
+  savePage.removeAll();
+  savePage.setLayout (null);
+  savePage.setBackground(new java.awt.Color(202, 204, 240));
+  enterspot = new JTextField ();
+  savePage.add(enterspot);
+  enterspot.setLocation (380,255);
+  enterspot.setSize(270,30);
+  enterspot.setText("");
+  JButton saving = new JButton ("Save");
+  savePage.add (saving);
+  saving.setBounds (440, 400, 150, 40);
+  JLabel title = new JLabel ("Save Your Score");
+  title.setFont(new java.awt.Font("Copperplate", 1, 25));
+savePage.add (title);
+Dimension size = title.getPreferredSize();
+title.setBounds(400, 25, 340, size.height);
+JLabel scoreDisplay = new JLabel ("Your current score is: " + (score1+score2+score3));
+savePage.add(scoreDisplay);
+size = scoreDisplay.getPreferredSize();
+scoreDisplay.setBounds(440, 140, size.width, size.height);
+JLabel info = new JLabel ("Please enter your username (can't contain special characteres)");
+savePage.add(info);
+size = info.getPreferredSize();
+info.setBounds(340, 230, size.width, size.height);
+savePage.setVisible(true);
+frame.add(savePage);
+frame.repaint();
+frame.revalidate();
+saving.addActionListener (new ActionListener ()
+
+                              {
+      public void actionPerformed (ActionEvent ae)
+      {
+        boolean valid = true;
+        String username = enterspot.getText();
+        System.out.println (username);
+        for (int x = 0; x <username.length(); x++)
+        {
+          if ((username.charAt(x)< 65 || username.charAt(x)> 90)&&(username.charAt(x)< 48 || username.charAt(x)> 57)&&(username.charAt(x)< 97 || username.charAt(x)> 122)&& username.charAt(x)!=32)
+          {
+            valid = false;
+          }
+        }
+        if (username.equals(""))
+        {
+           enterspot.setText("Username has to contain at least one character");
+        }
+        else if (valid)
+        {
+          hs.addName (score1+score2+score3, username);
+          enterspot.setText("Saved");
+        }
+        else
+        {
+          enterspot.setText("Username can't contain special characters");
+        }
+      }
+    });
+}
+  
+
+  public static void main (String[]args)
+
+  {
+
+    XtremeXscape x1 = new XtremeXscape();
+   // x1.opening();
+    x1.hauntedHousePic();
+    x1.menu();
+    
+
+// x1.livingRoomPic();
+
+// x1.girlPic();
+
+  }
+
+  
+
+}
+

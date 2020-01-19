@@ -1,0 +1,105 @@
+import java.awt.*;
+import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.event.*;
+
+/** The Credits class runs the end credits of the game when called and will close the screen after the animation.
+  * <p>
+  * @author H Zhu 
+  * @version Final 06.06.17
+  * <p>
+  * Modifications: took out the static main because it is now called in the XtremeXscape class
+  * <p>
+  * Total hours = 4
+  * <p>
+  * <b>Instance variables: </b>
+  * <p>
+  * <b>count </b> This creates an int variable that keeps track of how many times the Timer has looped in order to stop the Timer after a certian number of loops
+  * <p>
+  * <b>hauntedHouse </b> This creates an ImageIcon of the haunted house used in the background of the animation
+  * <p>
+  * <b>animationLoop </b> This creates an instance of the Timer class used to continously call the panel's repaint method inturn running the animation
+  * <p>
+  * <b>frame </b> This is the reference of the JFrame that is used throughout the game.
+  * 
+  */
+public class Credits extends JPanel
+{
+  private int count;
+  private ImageIcon hauntedHouse;
+  private Timer animationLoop;
+  private JFrame frame;
+  
+  /** The class constructor initializes the count variable, assigns the value of the Jframe passed the constructor to the instance variable frame, creates an instance of the JPanel,and sets up the layout of the JPanel used;
+    * It also receives the passed JFrame and passes it to the playEnd method. 
+    * 
+    * @param frame
+    * This is the reference of the JFrame that is used throughout the game.
+    */
+  public Credits (JFrame frame)
+  {
+    super();
+    this.setLayout (null);    
+    count = 0;
+    this.frame = frame;
+    playEnd();
+    
+  }
+  
+  /** The paint method is an override of the paint method already present in the JPanel class
+    * This method calls the original repaint method but then adds in Strings that contain the credits 
+    * The count variable manipulated by the Timer is used to determine where the String are positioned
+    * 
+    * @param g
+    * Graphics that are drawn onto the screen
+    */
+  @Override
+  public void paint (Graphics g)
+  {
+    super.repaint();
+    g.setFont(new java.awt.Font("Brush Script MT", Font.BOLD, 80));
+    g.drawImage (hauntedHouse.getImage(), 0, 0, 1024, 590, null);
+    g.setColor(Color.white);
+    g.drawString("EduGames", 360, 550 - count*2);
+    g.drawString("Created and designed by", 130, 640 - count*2);
+    g.drawString("Jessica and Hannah", 220, 730- count*2);
+    g.drawString("Instructions - Hannah", -1140+count*2, 150);
+    g.drawString("Levels Menu - Jessica", -1140+count*2, 250);
+    g.drawString("High Scores - Hannah", -1140+count*2, 350);
+    g.drawString("Goodbye Screen - Hannah", -1190+count*2, 450);
+    g.drawString("Level 1 - Jessica", 250, -1980 + count*2);
+    g.drawString("Level 2 - Jessica", 250, -1890 + count*2);
+    g.drawString("Level 3 - Hannah", 230, -1800 + count*2);
+    g.drawString("Splashscreen - Jessica", 3300 - count*2,90 );
+    g.drawString("Character Graphics - Jessica and Hannah", 3300 - count*2, 190);
+    g.drawString("Background Graphics - Hannah and Jessica", 3300- count*2, 290 );
+    g.drawString("Introduction Animation - Jessica", 3300- count *2, 390);
+    g.drawString("Ending Animation - Hannah", 3300 - count*2, 490);
+  }
+  
+  /** The playEnd method is used to call the paint method and increment the count variable 
+    * This method uses a timer to run call the paint method a specific number of times.
+    * The if statement is used to check how many the times the timer has run and whether or not to stop it
+    * This method disposes of the frame when the credits are finished playing
+    */
+  public void playEnd ()
+  {
+    hauntedHouse = new ImageIcon("HauntedHouse.png");
+    frame.add(this);
+    animationLoop = new Timer (2, new ActionListener ()
+                                 {
+      public void actionPerformed (ActionEvent ae)
+      {
+        count++; 
+        revalidate();
+        repaint ();
+        if (count >= 2320)
+        {
+          animationLoop.stop();
+          frame.dispose();
+        }
+      }
+    });
+    animationLoop.start();
+  }
+}

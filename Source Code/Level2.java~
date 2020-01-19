@@ -1,0 +1,185 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+/**
+  * @author Jessica Peter
+  * @version Final 06.06.17
+  * 
+  * Total hours: 10 hours
+  */
+public class Level2
+{
+  JFrame frame;
+  JPanel instructionsPane;
+  JPanel pane;
+  JLabel bLabel;
+  ImageIcon bedroomImage;
+  JLabel instructionsLabel;
+  JLabel zoomedLabel;
+  Timer zoomTimer;
+  Level2Game game;
+  boolean mouseFirst;
+  private XtremeXscape xxClass;
+  int x = 0;
+  int y = 0;
+  int xLen = 1024;
+  int yLen = 576;
+  
+  public Level2 (JFrame frame, XtremeXscape xxClass)
+  {
+    this.frame = frame;
+    this.xxClass = xxClass;
+    pane = new JPanel (new BorderLayout ());
+    game = new Level2Game(frame, xxClass);
+    
+  }
+
+  /** The firstInstructionsPage2() method creates the first set of 
+    * instructions that the user gets for the second level. The 
+    * instructions are displayed on a frame with a light purple
+    * background. The instructions are made on a JLabel, and there
+    * is a delay of 15000 milliseconds (15 seconds) so that the user has enough 
+    * time to read them.
+    */
+  public void firstInstructionsPage2()
+  {
+    instructionsPane = new JPanel ();
+    pane = new JPanel (new BorderLayout ());
+    x = 0;
+    y = 0;
+    xLen = 1024;
+    yLen = 576;
+    instructionsPane.setLayout (null);
+    instructionsPane.setBackground(new Color (189, 200, 250));
+    instructionsLabel = new JLabel ("<html>You have now entered the bedroom. You must look through the room for clues that can help you escape. Simply DOUBLE tap the objects in the room to see if you can uncover any secret clues. Once you have found the clue, you will be led to the game. You must complete the game to move onto the next level.</html>");
+    instructionsLabel.setFont (new Font("Serif", Font.BOLD, 30));
+    instructionsPane.add (instructionsLabel);
+    instructionsLabel.setBounds (0, 0, 1024, 390);
+    System.out.println ("adding i");
+    frame.add(instructionsPane);
+    frame.revalidate();
+    frame.repaint();
+  }
+  
+  // I added this method.
+  public void bedroom()
+  {
+    frame.add(pane);
+    bedroomImage = new ImageIcon ("Bedroom.png");
+    bLabel = new JLabel(bedroomImage);
+    pane.add(bLabel);
+    pane.repaint();
+    frame.revalidate();
+    frame.repaint();
+  }
+  // I added this method.
+  public void clicking()
+  {
+    mouseFirst = true;
+    pane.addMouseListener(new MouseAdapter() 
+                             {
+      public void mouseClicked(MouseEvent e) 
+      {
+        if (e.getX()>=737 && e.getX()<=817 && e.getY()>=372 && e.getY()<=780 && mouseFirst == true)
+        {
+          mouseFirst = false;
+          pane.remove(bLabel);
+          zooming(); 
+        }
+      }
+    });
+  }
+  // I added this method.
+  public void safeZoom()
+  {
+    x-=43;
+    y -= 20;
+    xLen+=45;
+    yLen+=23;
+    zoomedLabel = new JLabel(bedroomImage)
+    {
+      public void paintComponent (Graphics g) 
+      {
+        if (zoomedLabel != null) 
+        {
+          try
+          {
+           // System.out.println ("zooming");
+            g.drawImage (bedroomImage.getImage(), x, y, xLen, yLen, null);
+          // repaint ();
+          }
+          catch(Exception e)
+          {
+          }
+        }
+      }
+    };
+    pane.add(zoomedLabel);
+    pane.repaint();
+     frame.revalidate();
+    frame.repaint();
+  }
+  // I added this method.
+  public void zooming()
+  {
+    zoomTimer = new Timer (15, new ActionListener()
+                           {
+      public void actionPerformed (ActionEvent ae)
+      {
+        System.out.println ("zooming");
+        safeZoom();
+        if (x < -1000)
+        {
+          zoomTimer.stop();
+          frame.remove(pane);
+          frame.revalidate();
+          frame.repaint();
+        //  frame.remove(instructionsPane);
+    game = new Level2Game(frame, xxClass);
+    game.executeGame();
+        }
+      }
+    });
+      zoomTimer.start();
+    
+  }
+  // I added this method.
+  public void execution()
+  {
+    JButton close = new JButton ("Close");
+    firstInstructionsPage2();
+    instructionsPane.add(close);
+    close.setBounds (380, 400, 154, 50);
+    close.addActionListener (new ActionListener ()
+                               {
+      public void actionPerformed (ActionEvent ae)
+      {
+        frame.remove(instructionsPane);
+        frame.revalidate();
+    frame.repaint();
+    bedroom();
+    clicking();
+      }
+    });
+    
+    
+  }
+  
+  public int getScore()
+  {
+    return game.getScore();
+  }
+  
+//  public static void main (String[]args)
+//  {
+//    JFrame frame = new JFrame();
+//    frame.setSize (1024, 576);
+//    frame.setResizable(false);
+//    frame.setVisible(true);
+//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    Level2 l2 = new Level2(frame);
+//    l2.execution();
+//    
+//  }
+}
